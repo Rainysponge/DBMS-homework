@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}主页{% endblock %}
+
+{% block home_active %}active{% endblock %}
+
+{% block content %}
+    {{ user.username }} 你好！
+    {% for item in institude %}
+        {{ item.institute_name }}
+    {% empty %}
+        {{ Oops }}
+    {% endfor %}
+{% endblock %}
+
