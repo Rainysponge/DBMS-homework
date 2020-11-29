@@ -15,7 +15,7 @@ class Shop(models.Model):
 
 
 class PosInfo(models.Model):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField()
     start_time = models.DateTimeField()
 
@@ -27,6 +27,7 @@ class CommodityToshop(models.Model):
 
 
 class Pay(models.Model):
+    POS = models.ForeignKey(PosInfo, on_delete=models.DO_NOTHING)
     buyer_id = models.CharField(max_length=10)
     pay_time = models.CharField(max_length=10)
     pay_money = models.CharField(max_length=10)
@@ -34,7 +35,7 @@ class Pay(models.Model):
 
 
 class Commodity(models.Model):
-    commodity_id = models.CharField(max_length=10)
+    # commodity_id = models.CharField(max_length=10)
     commodity_price = models.CharField(max_length=10)
     commodity_name = models.CharField(max_length=10)
     commodity_contends = models.TextField()
