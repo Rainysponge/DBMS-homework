@@ -6,10 +6,11 @@
 
 {% block content %}
     {{ user.username }} 你好！
-    {% for item in institude %}
-        {{ item.institute_name }}
-    {% empty %}
-        {{ Oops }}
-    {% endfor %}
+    {% if user.Profile.is_student %}
+        同学好
+    {% endif %}
+    <script>
+        console.log('{{ user.Profile.is_student }}');
+    </script>
 {% endblock %}
 

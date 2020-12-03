@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
+{% block Link_active %}active{% endblock %}
+{% block home_active %}{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>This is shop_list.html</p>
                 <p>假装分类/导航条</p>
                 <p>该页面用于数据展示，后续应该没什么用</p>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 
                 <table class="table">
                     <thead class="thead-light">
@@ -17,6 +19,7 @@
                         <th scope="col">shop_owner</th>
                         <th scope="col">shop_position</th>
                         <th scope="col">入驻时间</th>
+                        <th scope="col">简介</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -28,6 +31,7 @@
                                     <td>{{ shop.shop_owner }}</td>
                                     <td>{{ shop.shop_position }}</td>
                                     <td>{{ shop.create_time|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ shop.contends|truncatechars:"5" }}...</td>
                                 </tr>
                             {% endif %}
                         {% empty %}

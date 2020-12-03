@@ -18,10 +18,10 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link {% block home_active %}{% endblock %} " href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+          <li class="nav-item {% block home_active %}active{% endblock %}">
+            <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {% block Link_active %}{% endblock %} ">
             <a class="nav-link" href="{% url 'shop_list' %}">Link</a>
           </li>
           <li class="nav-item dropdown">
@@ -39,6 +39,43 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
         </ul>
+        <ul class="nav navbar-nav">
+          {% if not user.is_authenticated %}
+                  <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                  </li>
+                  <li class="nav-item">
+                  <a class="nav-link" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                  </li>
+          {% else %}
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ user.username }}
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          {% block Active %}{% endblock %}
+
+                          <a class="dropdown-item" href="#">修改个人基本信息</a>
+                          <a class="dropdown-item" href="#">个人中心</a>
+                          
+                          <a class="dropdown-item" href="#">拜师请求<span class="sr-only">(current)</span></a>
+                          {% if user.is_staff %}
+                          <a id="goToAdmin" class="dropdown-item" href="" >后台数据管理</a>
+                              <script>
+                                  const test_base = window.location.href;
+                                  const e_base = test_base.split('/');
+                                  const homeUrl = e_base[2];
+                                  const item = 'http://'+homeUrl+'/admin';
+                                  document.getElementById('goToAdmin').href = item;
+                              </script>
+                          {% endif %}
+                          <a class="dropdown-item" href="{% url 'logout' %}">注销</a>
+
+                      </div>
+                </li>
+          {% endif %}
+
+          </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

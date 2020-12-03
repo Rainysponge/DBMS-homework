@@ -1,11 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Shop(models.Model):
     shop_name = models.CharField(max_length=32, null=True)
-    shop_owner = models.CharField(max_length=32, null=True)
-    shop_ownerID = models.CharField(max_length=18)
+    shop_owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    # shop_ownerID = models.CharField(max_length=18)
     shop_position = models.CharField(max_length=32, null=True)
     phone_number = models.CharField(max_length=11, null=True)
     contends = models.TextField()

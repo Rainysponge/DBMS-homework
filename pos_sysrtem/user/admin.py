@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Institute, Student, Teacher
+from .models import Institute, Student, Teacher, Profile, ShopOwner
 
 
 # Register your models here.
@@ -11,14 +11,24 @@ class InstituteAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'student_name', 'student_ID', 'student_class')
+    list_display = ('user', 'student_ID', 'student_class')
 
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'teacher_name', 'teacher_ID')
+    list_display = ('user',  'teacher_ID')
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
     # teacher_name = models.CharField(max_length=6)
     # teacher_ID = models.CharField(max_length=10)
     # institute = models.ForeignKey(Institute, on_delete=models.DO_NOTHING)
     # contents = models.TextField()
+
+
+@admin.register(Profile)
+class ProFileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'real_name', 'is_student', 'is_teacher', 'is_shop_owner')
+
+
+@admin.register(ShopOwner)
+class ShopOwnerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'owner_ID')
