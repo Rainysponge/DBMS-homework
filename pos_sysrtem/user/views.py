@@ -3,8 +3,9 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.models import User
 # from django.contrib.auth.models import User
-from .forms import LoginFrom, RegForm
-from .models import Profile
+from .forms import LoginFrom, RegForm, changeStudentInfoForm
+from .models import Profile, Student, Teacher, ShopOwner
+
 
 # Create your views here.
 
@@ -28,7 +29,6 @@ def login(request):
     return render(request, 'user/login.html', context)
 
 
-
 def register(request):
     if request.method == 'POST':
         reg_form = RegForm(request.POST)
@@ -48,12 +48,17 @@ def register(request):
             user.save()
             if who == '教师':
                 profile = Profile.objects.create(user=user, real_name=real_name, is_teacher=True)
+                teacher = Teacher.objects.create(user=user)
+                teacher.save()
             elif who == '学生':
                 profile = Profile.objects.create(user=user, real_name=real_name, is_student=True)
+                student = Student.objects.create(user=user)
+                student.save()
             else:
-                profile = Profile.objects.create(user=user, real_name=real_name, is_shop_owner=True)
+                profile = Profile.objects.create(user=user, sex=sex, real_name=real_name, is_shop_owner=True)
+                shop_owner = ShopOwner.objects.create(user=user)
+                shop_owner.save()
             profile.save()
-
 
             user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
@@ -70,3 +75,39 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect(request.GET.get('from', reverse('home')))
+
+
+def changeStudentInfo(request, user_pk):
+    user = User.objects.get(pk=user_pk)
+    if request.method == 'POST':
+        change_student_info_form = changeStudentInfoForm(request.POST)
+        if change_student_info_form.is_valid():
+            pass
+            grade = change_student_info_form.cleaned_data['grade']
+
+            dept = change_student_info_form.cleaned_data['dept']
+
+            birth = change_student_info_form.cleaned_data['birth']
+            profile = Profile.objects.get(user=user)
+            profile.birth = birth
+
+            if Student.objects.get(user=user):
+                student = Student.objects.get(user=user)
+                student.dept = dept
+                student.grade = grade
+            else:
+                student = Student.objects.create(dept=dept, grade=grade)
+            student.save()
+            profile.save()
+            return render(request, 'index.html', {'massage': '恭喜你已经成功修改学生信息啦'})
+
+    else:
+        change_student_info_form = changeStudentInfoForm()
+
+    context = {}
+
+    context['change_student_info_form'] = change_student_info_form
+    context['form_title'] = '修改学生信息'
+    context['user_name'] = user.username
+    context['massege'] = '信息修改成功！'
+    return render(request, 'user/change_student_info.html', context)

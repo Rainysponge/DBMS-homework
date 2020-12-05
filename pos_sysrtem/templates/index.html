@@ -11,6 +11,11 @@
     {% endif %}
     <script>
         console.log('{{ user.Profile.is_student }}');
+        console.log('{{ massage }}');
+        if ('{{ massage }}'){
+            alert('{{ massage }}');
+        }
+
     </script>
 {% endblock %}
 

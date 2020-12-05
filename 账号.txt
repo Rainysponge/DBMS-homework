@@ -1,0 +1,16 @@
+username：RegTest
+身份：学生
+密码：123456
+
+TeacherTest
+教师
+123456
+
+
+shopTest
+商家
+123456
+
+admin
+管理员(全属性)
+123456

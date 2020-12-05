@@ -12,7 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     real_name = models.CharField(max_length=6, null=True, blank=True)
     sex = models.CharField(max_length=2, null=True, blank=True)
-    IDnumber = models.CharField(max_length=20, null=True, blank=True)
+
     birth = models.DateTimeField(null=True, blank=True)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
@@ -25,9 +25,9 @@ class Student(models.Model):
     student_ID = models.CharField(max_length=10, null=True, blank=True)
     institute = models.ForeignKey(Institute, on_delete=models.DO_NOTHING, null=True, blank=True)
     student_class = models.CharField(max_length=20, null=True, blank=True)
-    
+    grade = models.CharField(max_length=5, null=True, blank=True)
     dept = models.CharField(max_length=10, null=True, blank=True)
-    
+
     contents = models.TextField()
 
 
@@ -39,9 +39,9 @@ class Teacher(models.Model):
 
 class ShopOwner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    IDnumber = models.CharField(max_length=20, null=True, blank=True)  # 身份证
     # owner_name = models.CharField(max_length=6, null=True, blank=True)
     owner_ID = models.CharField(max_length=10, null=True, blank=True)
-
 
 
 def get_Profile(self):
@@ -50,5 +50,6 @@ def get_Profile(self):
         return profile
     else:
         return ''
+
 
 User.Profile = get_Profile

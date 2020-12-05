@@ -55,10 +55,19 @@
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                           {% block Active %}{% endblock %}
 
-                          <a class="dropdown-item" href="#">修改个人基本信息</a>
+
+
+                          {% if user.Profile.is_student %}
+                              <a class="dropdown-item" href="{% url 'changestudentinfo' user.pk %}">修改学生基本信息</a>
+                          {% endif %}
+                          {% if user.Profile.is_teacher %}
+                              <a class="dropdown-item" href="#">修改老师基本信息</a>
+                          {% endif %}
+                          {% if user.Profile.is_shop_owner %}
+                              <a class="dropdown-item" href="#">修改商家基本信息</a>
+                          {% endif %}
                           <a class="dropdown-item" href="#">个人中心</a>
-                          
-                          <a class="dropdown-item" href="#">拜师请求<span class="sr-only">(current)</span></a>
+                          <!--<a class="dropdown-item" href="#">拜师请求<span class="sr-only">(current)</span></a>-->
                           {% if user.is_staff %}
                           <a id="goToAdmin" class="dropdown-item" href="" >后台数据管理</a>
                               <script>
