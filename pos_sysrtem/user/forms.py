@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Institute
 
 
 class LoginFrom(forms.Form):
@@ -35,6 +35,7 @@ class RegForm(forms.Form):
 
     email = forms.EmailField(label='邮箱',
                              widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输入邮箱'}))
+
     SEX = [
         ['男', '男'],
         ['女', '女']
@@ -83,6 +84,10 @@ class RegForm(forms.Form):
 
 
 class changeStudentInfoForm(forms.Form):
+    institute_list = Institute.objects.all()
+    INSTITUTE = []
+    for item in institute_list:
+        INSTITUTE.append([item, item.institute_name])
     GRADE = [
         ['大一', '大一'],
         ['大二', '大二'],
@@ -90,6 +95,7 @@ class changeStudentInfoForm(forms.Form):
         ['大四', '大四'],
     ]
     grade = forms.ChoiceField(label='年级', choices=GRADE)
+    institute = forms.ChoiceField(label='专业', choices=INSTITUTE)
     birth = forms.DateTimeField(label='生日',
                                 widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
 
@@ -104,7 +110,4 @@ class changeStudentInfoForm(forms.Form):
     #                          max_length=30, min_length=2,
     #                          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '不要输入克莱登大学哦~'}))
 
-# class changeTeacherInfoForm(forms.Form):
-#     skill = forms.CharField(label='学校',
-#                             max_length=30, min_length=2,
-#                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '不要输入克莱登大学哦~'}))
+
