@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.models import User
 # from django.contrib.auth.models import User
-from .forms import LoginFrom, RegForm, changeStudentInfoForm
+from .forms import LoginFrom, RegForm, changeStudentInfoForm, changeTeacherInfoForm, changeShopownerInfoForm
 from .models import Profile, Student, Teacher, ShopOwner
 
 
@@ -111,3 +111,72 @@ def changeStudentInfo(request, user_pk):
     context['user_name'] = user.username
     context['massege'] = '信息修改成功！'
     return render(request, 'user/change_student_info.html', context)
+
+def changeTeacherInfo(request, user_pk):
+    user = User.objects.get(pk=user_pk)
+    if request.method == 'POST':
+        change_teacher_info_form = changeTeacherInfoForm(request.POST)
+        if change_teacher_info_form.is_valid():
+            pass
+
+            dept = change_teacher_info_form.cleaned_data['dept']
+
+            birth = change_teacher_info_form.cleaned_data['birth']
+            profile = Profile.objects.get(user=user)
+            profile.birth = birth
+
+            if Teacher.objects.get(user=user):
+                teacher = Teacher.objects.get(user=user)
+                teacher.dept = dept
+            else:
+                teacher = Teacher.objects.create(dept=dept)
+
+            teacher.save()
+            profile.save()
+            return render(request, 'index.html', {'massage': '恭喜你已经成功修改教师信息啦'})
+
+    else:
+        change_teacher_info_form = changeTeacherInfoForm()
+
+    context = {}
+
+    context['change_teacher_info_form'] = change_teacher_info_form
+    context['form_title'] = '修改老师信息'
+    context['user_name'] = user.username
+    context['massege'] = '信息修改成功！'
+    return render(request, 'user/change_teacher_info.html', context)
+
+
+def changeShopownerInfo(request, user_pk):
+    user = User.objects.get(pk=user_pk)
+    if request.method == 'POST':
+        change_shopowner_info_form = changeShopownerInfoForm(request.POST)
+        if change_shopowner_info_form.is_valid():
+            pass
+
+            dept = change_shopowner_info_form.cleaned_data['dept']
+
+            birth = change_shopowner_info_form.cleaned_data['birth']
+            profile = Profile.objects.get(user=user)
+            profile.birth = birth
+
+            if ShopOwner.objects.get(user=user):
+                shopowner = ShopOwner.objects.get(user=user)
+                shopowner.dept = dept
+
+            else:
+                shopowner = ShopOwner.objects.create(dept=dept)
+            shopowner.save()
+            profile.save()
+            return render(request, 'index.html', {'massage': '恭喜你已经成功修改商家信息啦'})
+
+    else:
+        change_shopowner_info_form = changeShopownerInfoForm()
+
+    context = {}
+
+    context['change_shopowner_info_form'] = change_shopowner_info_form
+    context['form_title'] = '修改商家信息'
+    context['user_name'] = user.username
+    context['massege'] = '信息修改成功！'
+    return render(request, 'user/change_shopowner_info.html', context)

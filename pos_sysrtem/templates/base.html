@@ -73,10 +73,10 @@
                               <a class="dropdown-item" href="{% url 'changestudentinfo' user.pk %}">修改学生基本信息</a>
                           {% endif %}
                           {% if user.Profile.is_teacher %}
-                              <a class="dropdown-item" href="#">修改老师基本信息</a>
+                              <a class="dropdown-item" href="{% url 'changeteacherinfo' user.pk %}">修改老师基本信息</a>
                           {% endif %}
                           {% if user.Profile.is_shop_owner %}
-                              <a class="dropdown-item" href="#">修改商家基本信息</a>
+                              <a class="dropdown-item" href="{% url 'changeshopownerinfo' user.pk %}">修改商家基本信息</a>
                           {% endif %}
                           <a class="dropdown-item" href="#">个人中心</a>
                           <!--<a class="dropdown-item" href="#">拜师请求<span class="sr-only">(current)</span></a>-->
