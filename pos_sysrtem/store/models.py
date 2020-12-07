@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 # Create your models here.
 class Shop(models.Model):
     shop_name = models.CharField(max_length=32, null=True)
@@ -17,6 +18,7 @@ class Shop(models.Model):
 
 class PosInfo(models.Model):
     shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+
     is_active = models.BooleanField()
     start_time = models.DateTimeField()
 
@@ -26,17 +28,13 @@ class Commodity(models.Model):
     commodity_price = models.CharField(max_length=10)
     commodity_name = models.CharField(max_length=10)
     commodity_contends = models.TextField()
+    def __str__(self):
+        return self.commodity_name
 
 
 class CommodityToshop(models.Model):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
-    commodity_id = models.ForeignKey(Commodity,on_delete=models.CASCADE)
-
-
-class Order(models.Model):
-    order_id = models.CharField(max_length=10)
-    commodity_id = models.ForeignKey(Commodity, on_delete=models.DO_NOTHING)
-    number = models.IntegerField(default=0)
+    shop_owner = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    commodity_id = models.ForeignKey(Commodity, on_delete=models.CASCADE)
 
 
 class Pay(models.Model):
@@ -44,5 +42,12 @@ class Pay(models.Model):
     buyer_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     pay_time = models.DateTimeField(default=timezone.now)
     pay_money = models.CharField(max_length=10)
-    order_id = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+    # order_id = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+
+
 #     先一次只能购买一次商品
+class Order(models.Model):
+    order_id = models.CharField(max_length=10, null=True)
+    commodity_id = models.ForeignKey(Commodity, on_delete=models.DO_NOTHING)
+    number = models.IntegerField(default=0)
+    pay = models.ForeignKey(Pay, on_delete=models.DO_NOTHING, null=True)

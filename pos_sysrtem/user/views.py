@@ -112,6 +112,7 @@ def changeStudentInfo(request, user_pk):
     context['massege'] = '信息修改成功！'
     return render(request, 'user/change_student_info.html', context)
 
+
 def changeTeacherInfo(request, user_pk):
     user = User.objects.get(pk=user_pk)
     if request.method == 'POST':

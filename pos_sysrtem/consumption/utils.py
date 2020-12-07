@@ -17,7 +17,5 @@ def get_seven_days_consumption_data(user):
                                          pay_time__month=date.month, pay_time__day=date.day)
         result = pay_details.aggregate(pay_details_sum=Sum('pay_money'))
         pay_money.append(result['pay_details_sum'] or 0)
-        # read_details = ReadDetail.objects.filter(content_type=content_type, date=date)
-        # result = read_details.aggregate(read_num_sum=Sum('read_num'))
-        # read_nums.append(result['read_num_sum'] or 0)
+
     return dates, pay_money

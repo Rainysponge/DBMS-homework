@@ -8,7 +8,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 {{ user.username }} 你好！
                 {% if user.Profile.is_student %}
                     同学好
@@ -23,7 +23,8 @@
                 {% empty %}
                 {% endfor %}
             </div>
-            <div class="col-md 8">
+            <div class="col-md 6">
+
                 <div id="seven_days_consumption" style="width: 600px;height:400px;"></div>
             </div>
         </div>
@@ -36,18 +37,27 @@
 
         // 指定图表的配置项和数据
         var option = {
+            title: {
+                text: '近七日消费'
+            },
             tooltip: {},
             legend: {
                 data:['消费']
             },
+
             xAxis: {
+                type: 'category',
                 data: {{ dates|safe }}
             },
-            yAxis: {},
+            yAxis: {
+                type: 'value',
+                name:'单位：元',
+            },
             series: [{
-                name: '消费',
-                type: 'bar',
-                data: {{ seven_days_consumption|safe }}
+                name:'消费金额',
+                data: {{ seven_days_consumption|safe }},
+                type: 'line',
+                smooth: true
             }]
         };
 

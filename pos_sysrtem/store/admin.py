@@ -26,7 +26,7 @@ class CommodityAdmin(admin.ModelAdmin):
 
 @admin.register(CommodityToshop)
 class CommodityToshop(admin.ModelAdmin):
-    list_display = ('shop_id', 'commodity_id')
+    list_display = ('shop_owner', 'commodity_id')
 
 
 @admin.register(Order)

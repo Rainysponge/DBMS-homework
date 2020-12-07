@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ user.username }}de收入{% endblock %}
+{% block home_active %}{% endblock %}
+{% block consumption_ts_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                {{ user.username }} 你好！
+                {% if user.Profile.is_student %}
+                    同学好
+                {% endif %}
+
+
+            </div>
+            <div class="col-md 6">
+
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
