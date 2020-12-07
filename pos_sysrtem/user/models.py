@@ -35,6 +35,8 @@ class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # teacher_name = models.CharField(max_length=6, null=True, blank=True)
     teacher_ID = models.CharField(max_length=10, null=True, blank=True)
+    dept = models.CharField(max_length=10, null=True, blank=True)
+    institute = models.ForeignKey(Institute, on_delete=models.DO_NOTHING, null=True, blank=True)
 
 
 class ShopOwner(models.Model):

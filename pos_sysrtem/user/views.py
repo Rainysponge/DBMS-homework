@@ -154,7 +154,7 @@ def changeShopownerInfo(request, user_pk):
         if change_shopowner_info_form.is_valid():
             pass
 
-            dept = change_shopowner_info_form.cleaned_data['dept']
+            IDnumber = change_shopowner_info_form.cleaned_data['IDnumber']
 
             birth = change_shopowner_info_form.cleaned_data['birth']
             profile = Profile.objects.get(user=user)
@@ -162,10 +162,10 @@ def changeShopownerInfo(request, user_pk):
 
             if ShopOwner.objects.get(user=user):
                 shopowner = ShopOwner.objects.get(user=user)
-                shopowner.dept = dept
+                shopowner.IDnumber = IDnumber
 
             else:
-                shopowner = ShopOwner.objects.create(dept=dept)
+                shopowner = ShopOwner.objects.create(IDnumber=IDnumber)
             shopowner.save()
             profile.save()
             return render(request, 'index.html', {'massage': '恭喜你已经成功修改商家信息啦'})
