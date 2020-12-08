@@ -9,17 +9,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                {{ user.username }} 你好！
+                <p> <span style="color: white; ">{{ user.username }} 你好！</span></p>
                 {% if user.Profile.is_student %}
-                    同学好
+                    <span style="color: white; ">同学好</span>
                 {% endif %}
 
-                {{ dates }}
-                {{ seven_days_consumption }}
+                <span style="color: white; ">{{ dates }}</span>
+                <span style="color: white; ">{{ seven_days_consumption }}</span>
                 {% for pay in pay_list %}
-                    <p>{{ pay.buyer_id.username }}</p>
-                    <p>{{ pay.pay_money }}</p>
-                    <p>{{ pay.pay_time }}</p>
+
+                    <p><span style="color: white; ">{{ pay.buyer_id.username }} </span></p>
+                    <p><span style="color: white; ">{{ pay.pay_money }}</span></p>
+                    <p><span style="color: white; ">{{ pay.pay_time }}</span></p>
                 {% empty %}
                 {% endfor %}
             </div>
@@ -30,7 +31,7 @@
         </div>
     </div>
 
-    <script type="text/javascript">
+    <script type="text/javascript" >
 
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('seven_days_consumption'));
@@ -38,26 +39,49 @@
         // 指定图表的配置项和数据
         var option = {
             title: {
-                text: '近七日消费'
+                text: '近七日消费',
+                textStyle:{
+                    color: '#FFFFFF'
+                }
             },
             tooltip: {},
             legend: {
-                data:['消费']
+                data:['消费'],
+                textStyle:{
+                    color: '#FFFFFF'
+                }
             },
 
             xAxis: {
                 type: 'category',
-                data: {{ dates|safe }}
+                data: {{ dates|safe }},
+                name:'日期',
+                nameTextStyle:{color: '#ffffff'},
+                 axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        }
+
             },
             yAxis: {
                 type: 'value',
                 name:'单位：元',
+                nameTextStyle:{color: '#ffffff'},
+                axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        }
             },
             series: [{
                 name:'消费金额',
                 data: {{ seven_days_consumption|safe }},
                 type: 'line',
-                smooth: true
+                smooth: true,
+
             }]
         };
 

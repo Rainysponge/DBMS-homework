@@ -5,7 +5,7 @@
 {% block home_active %}active{% endblock %}
 
 {% block content %}
-    {{ user.username }} 你好！
+    <p><font color="white">{{ user.username }} 你好！</font></p>
     {% if user.Profile.is_student %}
         同学好
     {% endif %}
