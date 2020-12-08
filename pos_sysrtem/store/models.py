@@ -25,9 +25,11 @@ class PosInfo(models.Model):
 
 class Commodity(models.Model):
     # commodity_id = models.CharField(max_length=10)
-    commodity_price = models.CharField(max_length=10)
+    shop = models.ForeignKey(Shop, on_delete=models.DO_NOTHING, null=True)
+    commodity_price = models.IntegerField(default=1)
     commodity_name = models.CharField(max_length=10)
     commodity_contends = models.TextField()
+
     def __str__(self):
         return self.commodity_name
 
@@ -38,16 +40,17 @@ class CommodityToshop(models.Model):
 
 
 class Pay(models.Model):
-    POS = models.ForeignKey(PosInfo, on_delete=models.DO_NOTHING)
+    pay_No = models.CharField(max_length=24, null=True)
+    shop = models.ForeignKey(Shop, on_delete=models.DO_NOTHING, null=True)
+    POS = models.ForeignKey(PosInfo, on_delete=models.DO_NOTHING, null=True)
     buyer_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     pay_time = models.DateTimeField(default=timezone.now)
-    pay_money = models.CharField(max_length=10)
-    # order_id = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+    pay_money = models.IntegerField(default=0)
 
 
 #     先一次只能购买一次商品
 class Order(models.Model):
-    order_id = models.CharField(max_length=10, null=True)
+    # order_id = models.CharField(max_length=10, null=True)
     commodity_id = models.ForeignKey(Commodity, on_delete=models.DO_NOTHING)
     number = models.IntegerField(default=0)
     pay = models.ForeignKey(Pay, on_delete=models.DO_NOTHING, null=True)

@@ -25,8 +25,8 @@
                     <tbody>
                         {% for shop in shop_list %}
                             {% if shop.is_active %}
-                                <tr style="color: white">
-                                    <th scope="row" >{{ shop.pk }}</th>
+                                <tr>
+                                    <th scope="row">{{ shop.pk }}</th>
                                     <td>{{ shop.shop_name }}</td>
                                     <td>{{ shop.shop_owner }}</td>
                                     <td>{{ shop.shop_position }}</td>

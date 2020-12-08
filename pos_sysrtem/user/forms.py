@@ -97,7 +97,8 @@ class changeStudentInfoForm(forms.Form):
     grade = forms.ChoiceField(label='年级', choices=GRADE)
     institute = forms.ChoiceField(label='专业', choices=INSTITUTE)
     birth = forms.DateTimeField(label='生日',
-                                widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
+                                widget=forms.DateTimeInput(
+                                    attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
 
     # portrait = forms.ImageField(label='头像', help_text='不能超过5M!')
 
@@ -119,7 +120,8 @@ class changeTeacherInfoForm(forms.Form):
 
     institute = forms.ChoiceField(label='专业', choices=INSTITUTE)
     birth = forms.DateTimeField(label='生日',
-                                widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
+                                widget=forms.DateTimeInput(
+                                    attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
 
     # portrait = forms.ImageField(label='头像', help_text='不能超过5M!')
 
@@ -129,13 +131,12 @@ class changeTeacherInfoForm(forms.Form):
 
 
 class changeShopownerInfoForm(forms.Form):
-
-
     birth = forms.DateTimeField(label='生日',
-                                widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
+                                widget=forms.DateTimeInput(
+                                    attrs={'class': 'form-control', 'placeholder': '实例：2020-1-1'}))
 
     # portrait = forms.ImageField(label='头像', help_text='不能超过5M!')
 
     IDnumber = forms.CharField(label='身份证',
-                           max_length=20, min_length=2,
-                           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填写真实信息'}))
+                               max_length=20, min_length=2,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填写真实信息'}))

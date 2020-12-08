@@ -16,12 +16,12 @@ class PosInfoAdmin(admin.ModelAdmin):
 
 @admin.register(Pay)
 class PayAdmin(admin.ModelAdmin):
-    list_display = ('id', 'POS','buyer_id', 'pay_time')
+    list_display = ('id', 'shop', 'pay_No', 'buyer_id', 'pay_time')
 
 
 @admin.register(Commodity)
 class CommodityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'commodity_name')
+    list_display = ('id', 'shop', 'commodity_name')
 
 
 @admin.register(CommodityToshop)
@@ -31,4 +31,4 @@ class CommodityToshop(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'commodity_id')
+    list_display = ( 'pay', 'commodity_id')

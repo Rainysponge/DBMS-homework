@@ -28,7 +28,11 @@
           data: {
             message: '注意信息的正确性哦~\n ' + new Date().toLocaleString()
           }
-        })
+        });
+        if('{{ massage }}'){
+            alert('{{ massage }}');
+        }
+
     </script>
 
 {% endblock content %}
