@@ -6,7 +6,7 @@ from .models import Shop, PosInfo, Pay, Commodity, CommodityToshop, Order
 
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ('shop_name', 'shop_owner')
+    list_display = ('shop_id', 'shop_name', 'shop_owner')
 
 
 @admin.register(PosInfo)

@@ -15,7 +15,7 @@ def student_consumption(request):
 
     pay_list = Pay.objects.filter(buyer_id=user)
     context = {}
-    # context['pay_today'] = pay_today
+
     context['pay_list'] = pay_list
     context['dates'] = dates
     context['seven_days_consumption'] = seven_days_consumption

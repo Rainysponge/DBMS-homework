@@ -2,10 +2,23 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from user.models import Teacher, Student
 from .models import Shop, Commodity, Order, CommodityToshop, Pay
-from .forms import createOrderForm, createPayForm
+from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm
 
 
 # Create your views here.
+def myshopList(request):
+    try:
+        user = request.user
+    except:
+        return render(request, 'user/login.html', {'massage': '用户未登录！'})
+    my_shop_list = Shop.objects.filter(shop_owner=user)
+
+    context = {}
+    context['my_shop_list'] = my_shop_list
+    return render(request, 'store/myShopList.html', context)
+    # pay_list = Pay.objects.filter()
+
+
 
 def shop_list(request):
     shops = Shop.objects.all
@@ -15,22 +28,38 @@ def shop_list(request):
     return render(request, 'store/shop_list.html', context)
 
 
-def create_orders(request):
+def create_orders(request, shop_pk):
     user = request.user
     if request.method == 'POST':
         create_order_form = createOrderForm(request.POST)
         if create_order_form.is_valid():
+
             commodity = create_order_form.cleaned_data['commodity']
             pay_No = create_order_form.cleaned_data['pay_No']
-            pay_No = str(user.pk) + ':' + pay_No
-            pay = Pay.objects.get(pay_No=pay_No)
+            # shop_id = create_order_form.cleaned_data['shop_id']
+            # shop_id = str(user.pk) + '_' + shop_id
             try:
-                commodityO = Commodity.objects.get(commodity_name=commodity)
+                shop = Shop.objects.get(pk=shop_pk)
+            except:
+                create_order_form = createOrderForm()
+                context = {}
+                context['create_order_form'] = create_order_form
+                context['form_title'] = '##'
+                context['massage'] = '店铺编号有误'
+                return render(request, 'store/create_orders.html', context)
+            # shop = Shop.objects.get(pk=shop_pk)
+            pay_No = str(shop.shop_id) + ':' + pay_No
+            pay = Pay.objects.get(pay_No=pay_No)
+            commodityO = Commodity.objects.get(commodity_name=commodity, shop=shop)
+            try:
+
+
+
                 number = create_order_form.cleaned_data['number']
                 number = int(number)
                 order = Order.objects.create(commodity_id=commodityO, number=number, pay=pay)
 
-                pay.pay_money += commodityO.commodity_price*number
+                pay.pay_money += commodityO.commodity_price * number
                 order.save()
                 pay.save()
             except Exception as e:
@@ -47,23 +76,35 @@ def create_orders(request):
         create_order_form = createOrderForm()
 
     context = {}
-    # context['page_title'] = '欢迎'
+
     context['create_order_form'] = create_order_form
-    # context['commodity_list'] = commodity_list
+
     context['form_title'] = '##'
     return render(request, 'store/create_orders.html', context)
 
 
-def creat_pay(request):
+def creat_pay(request, shop_pk):
     # str
-    user = request.user
+    # user = request.user
     if request.method == 'POST':
         create_pay_form = createPayForm(request.POST)
         if create_pay_form.is_valid():
-            shop = Shop.objects.get(shop_owner=user)
+            # shop = Shop.objects.get(shop_owner=user)
+            # shop_id = create_pay_form.cleaned_data['shop_id']
+            # shop_id = str(user.pk) + '_' + shop_id
+            try:
+                shop = Shop.objects.get(pk=shop_pk)
+            except:
+                create_order_form = createOrderForm()
+                context = {}
+                context['create_order_form'] = create_order_form
+                context['form_title'] = '##'
+                context['massage'] = '店铺编号有误'
+                return render(request, 'store/create_pay.html', context)
+            shop_id = shop.shop_id
             buyer_id = create_pay_form.cleaned_data['buyer_id']
             pay_No = create_pay_form.cleaned_data['pay_No']
-            pay_No = str(user.pk) + ':' + pay_No
+            pay_No = str(shop_id) + ':' + pay_No
             try:
                 # 验证编号是否已经存在
                 payTest = Pay.objects.get(pay_No=pay_No)
@@ -101,3 +142,111 @@ def creat_pay(request):
     # context['commodity_list'] = commodity_list
     context['form_title'] = '##'
     return render(request, 'store/create_pay.html', context)
+
+
+def create_shop(request):
+    # shop_id
+    # shop_name
+    # phone_number
+
+    try:
+        user = request.user
+    except:
+        return render(request, 'user/login.html', {'massage': '用户未登录！'})
+    if request.method == 'POST':
+        create_shop_form = createShopForm(request.POST)
+        if create_shop_form.is_valid():
+            shop_name = create_shop_form.cleaned_data['shop_name']
+            shop_id = create_shop_form.cleaned_data['shop_id']
+            phone_number = create_shop_form.cleaned_data['phone_number']
+            shop_id = str(user.pk) + '_' + shop_id
+
+            try:
+                shopTest1 = Shop.objects.get(shop_id=shop_id)
+
+                create_shop_form = createShopForm()
+                context = {}
+                context['create_shop_form'] = create_shop_form
+                # context['commodity_list'] = commodity_list
+                context['form_title'] = '##'
+                context['massage'] = '该商店已经存在！'
+                return render(request, 'store/create_shop.html', context)
+            except:
+                pass
+            try:
+                shopTest2 = Shop.objects.get(shop_name=shop_name)
+
+                create_shop_form = createShopForm()
+                context = {}
+                context['create_shop_form'] = create_shop_form
+                # context['commodity_list'] = commodity_list
+                context['form_title'] = '##'
+                context['massage'] = '该商店已经存在！'
+                return render(request, 'store/create_shop.html', context)
+            except:
+                pass
+            shop = Shop.objects.create(shop_owner=user, shop_name=shop_name, shop_id=shop_id, phone_number=phone_number)
+            shop.save()
+            context = {'massage': 'Success'}
+            # return redirect(request.GET.get('from', reverse('home')))
+            return render(request, 'index.html', context)
+    else:
+        create_shop_form = createShopForm()
+    context = {}
+    # context['page_title'] = '欢迎'
+    context['create_shop_form'] = create_shop_form
+    # context['commodity_list'] = commodity_list
+    context['form_title'] = '##'
+    return render(request, 'store/create_shop.html', context)
+
+
+def update_commodity(request):
+    try:
+        user = request.user
+    except:
+        return render(request, 'user/login.html', {'massage': '用户未登录！'})
+    if request.method == 'POST':
+        create_commodity_form = createCommodityForm(request.POST)
+        # 创建商品
+        if create_commodity_form.is_valid():
+            shop_id = create_commodity_form.cleaned_data['shop_id']
+            commodity_price = create_commodity_form.cleaned_data['commodity_price']
+            commodity_name = create_commodity_form.cleaned_data['commodity_name']
+            shop_id = str(user.pk) + '_' + shop_id
+            try:
+                commodity = Commodity.objects.get(commodity_name=commodity_name)
+                create_commodity_form = createCommodityForm()
+                context = {}
+                context['create_commodity_form'] = create_commodity_form
+                context['form_title'] = '##'
+                context['massage'] = '该商品已被创建或存在同名商品！'
+                return render(request, 'store/update_commodity.html', context)
+            except:
+                pass
+            try:
+                shop = Shop.objects.get(shop_id=shop_id)
+                commodity = Commodity.objects.create(shop=shop, commodity_name=commodity_name,
+                                                     commodity_price=commodity_price)
+                commodity.save()
+            except Exception as e:
+                create_commodity_form = createCommodityForm()
+                context = {}
+                context['create_commodity_form'] = create_commodity_form
+                context['form_title'] = '##'
+                context['massage'] = '请输入正确信息'
+                return render(request, 'store/update_commodity.html', context)
+
+            context = {'massage': '创建商品成功！'}
+            return render(request, 'index.html', context)
+    else:
+        create_commodity_form = createCommodityForm()
+
+    context = {}
+    # context['page_title'] = '欢迎'
+    context['create_commodity_form'] = create_commodity_form
+    # context['commodity_list'] = commodity_list
+    context['form_title'] = '##'
+    return render(request, 'store/update_commodity.html', context)
+
+
+
