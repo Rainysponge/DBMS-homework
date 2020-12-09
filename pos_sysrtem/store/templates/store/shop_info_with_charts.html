@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% block title %} {{ shop_info_list.shop_name }}de商店信息 {% endblock %}
+{% block Link_active %}active{% endblock %}
+{% block home_active %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <br>
+                <br>
+                <br>
+                <div class="card" style="width: 18rem;">
+
+                  <div class="card-body">
+                    <h5 class="card-title">{{ shop_info_list.shop_name }}</h5>
+                    <p class="card-text">{{ shop_info_list.contends }}</p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ shop_info_list.shop_owner }}</li>
+                    <li class="list-group-item">{{ shop_info_list.shop_position }}</li>
+                    <li class="list-group-item">{{ shop_info_list.phone_number }}</li>
+                  </ul>
+                  <div class="card-body">
+                    <a href="{% url 'shop_info' shop_info_list.pk %}" class="card-link">查看商品</a>
+
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div id="d30_days_earn" style="width: 800px;height:400px;"></div>
+                <h2 style="text-align: center">账目表</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+
+                        <th scope="col">编号</th>
+                        <th scope="col">产生时间</th>
+                        <th scope="col">买家</th>
+                        <th scope="col">金额</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for pay_item in pay_list %}
+
+                                <tr>
+                                    <th scope="row">
+                                        <a href="{% url 'orders_in_pay' pay_item.pk %}">{{ pay_item.pay_No }}</a>
+                                    </th>
+                                    <td>{{ pay_item.pay_time }}</td>
+                                    <td>{{ pay_item.buyer_id.username }}</td>
+                                    <td>{{ pay_item.pay_money }}</td>
+
+                                </tr>
+
+                        {% empty %}
+                            <p>没有数据哦~</p>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        var myChart = echarts.init(document.getElementById('d30_days_earn'));
+        var dataAxis = {{ dates|safe }};
+        var data = {{ earn|safe }};
+        var yMax = {{ max_earn|safe }};
+        var dataShadow = [];
+
+        for (var i = 0; i < data.length; i++) {
+            dataShadow.push(yMax);
+        }
+
+        option = {
+            title: {
+                text: '该店近30日收入',
+                subtext: '点击或滑动可以缩放哦~'
+            },
+            xAxis: {
+                data: dataAxis,
+                axisLabel: {
+                    inside: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                z: 10
+            },
+            yAxis: {
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside'
+                }
+            ],
+            series: [
+                { // For shadow
+                    type: 'bar',
+                    itemStyle: {
+                        color: 'rgba(0,0,0,0.05)'
+                    },
+                    barGap: '-100%',
+                    barCategoryGap: '40%',
+                    data: dataShadow,
+                    animation: false
+                },
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#83bff6'},
+                                {offset: 0.5, color: '#188df0'},
+                                {offset: 1, color: '#188df0'}
+                            ]
+                        )
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#2378f7'},
+                                    {offset: 0.7, color: '#2378f7'},
+                                    {offset: 1, color: '#83bff6'}
+                                ]
+                            )
+                        }
+                    },
+                    data: data
+                }
+            ]
+        };
+
+        // Enable data zoom when user click bar.
+        var zoomSize = 6;
+        myChart.on('click', function (params) {
+            console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+                endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+            });
+        });
+        myChart.setOption(option);
+    </script>
+
+
+{% endblock %}

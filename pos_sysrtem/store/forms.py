@@ -57,9 +57,9 @@ class createCommodityForm(forms.Form):
     # commodity_price = models.IntegerField(default=1)
     # commodity_name = models.CharField(max_length=10)
     # commodity_contends = models.TextField()
-    shop_id = forms.CharField(label='商店编号',
-                              max_length=10, min_length=1,
-                              widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # shop_id = forms.CharField(label='商店编号',
+    #                           max_length=10, min_length=1,
+    #                           widget=forms.TextInput(attrs={'class': 'form-control'}))
     commodity_name = forms.CharField(label='商品名称',
                                      max_length=10, min_length=1,
                                      widget=forms.TextInput(attrs={'class': 'form-control'}))

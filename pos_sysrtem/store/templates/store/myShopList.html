@@ -28,7 +28,11 @@
                             {% if shop.is_active %}
                                 <tr>
                                     <th scope="row">{{ shop.pk }}</th>
-                                    <td>{{ shop.shop_name }}</td>
+                                    <td>
+                                        <a href="{% url 'shop_info' shop.pk %}">
+                                            {{ shop.shop_name }}
+                                        </a>
+                                    </td>
                                     <td>{{ shop.shop_owner }}</td>
                                     <td>{{ shop.shop_position }}</td>
                                     <td>{{ shop.create_time|date:"Y-m-d" }}</td>
@@ -42,7 +46,7 @@
                                               <a class="dropdown-item" href="{% url 'create_pay' shop.pk %}">创建账单</a>
                                               <a class="dropdown-item" href="{% url 'create_orders' shop.pk %}">创建订单</a>
                                               <a class="dropdown-item" href="#">修改店铺信息</a>
-                                              <a class="dropdown-item" href="{% url 'update_commodity' %}">修改商品信息</a>
+                                              <a class="dropdown-item" href="{% url 'update_commodity' shop.pk %}">修改商品信息</a>
 
                                             </div>
 

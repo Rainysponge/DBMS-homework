@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %} {{ shop_info_list.shop_name }}de商店信息 {% endblock %}
+{% block Link_active %}active{% endblock %}
+{% block home_active %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <br>
+                <br>
+                <br>
+                <div class="card" style="width: 18rem;">
+
+                  <div class="card-body">
+                    <h5 class="card-title">{{ shop_info_list.shop_name }}</h5>
+                    <p class="card-text">{{ shop_info_list.contends }}</p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ shop_info_list.shop_owner }}</li>
+                    <li class="list-group-item">{{ shop_info_list.shop_position }}</li>
+                    <li class="list-group-item">{{ shop_info_list.phone_number }}</li>
+                  </ul>
+                  <div class="card-body">
+                    <a href="{% url 'shop_info_with_charts' shop_info_list.pk %}" class="card-link">查看近日收入</a>
+
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h2 style="text-align: center">商品列表</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+
+                        <th scope="col">商品名称</th>
+                        <th scope="col">商品价格</th>
+
+                        <th scope="col">简介</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for commodity in commodity_list %}
+
+                                <tr>
+                                    <th scope="row">{{ commodity.commodity_name }}</th>
+                                    <td>{{ commodity.commodity_price }}</td>
+
+                                    <td>{{ commodity.commodity_contends }}</td>
+
+                                </tr>
+
+                        {% empty %}
+                            <p>没有数据哦~</p>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                <h2 style="text-align: center">账目表</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+
+                        <th scope="col">编号</th>
+                        <th scope="col">产生时间</th>
+                        <th scope="col">买家</th>
+                        <th scope="col">金额</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for pay_item in pay_list %}
+
+                                <tr>
+                                    <th scope="row">
+                                        <a href="{% url 'orders_in_pay' pay_item.pk %}">{{ pay_item.pay_No }}</a>
+                                    </th>
+                                    <td>{{ pay_item.pay_time }}</td>
+                                    <td>{{ pay_item.buyer_id.username }}</td>
+                                    <td>{{ pay_item.pay_money }}</td>
+
+                                </tr>
+
+                        {% empty %}
+                            <p>没有数据哦~</p>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}

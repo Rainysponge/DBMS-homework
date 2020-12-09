@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %} {{ shop_info_list.shop_name }}de商店信息 {% endblock %}
+{% block Link_active %}active{% endblock %}
+{% block home_active %}{% endblock %}
+{% block content %}
+    <div class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mx-auto shadow p-3 bg-white rounded">
+                <h2 style="text-align: center">商品列表</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">商品名称</th>
+                        <th scope="col">商品价格</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_item in order_list %}
+
+                                <tr>
+                                    <th scope="row">{{ order_item.pk }}</th>
+                                    <th>{{ order_item.commodity_id }}</th>
+                                    <td>{{ order_item.number }}</td>
+                                </tr>
+
+                        {% empty %}
+                            <p>没有数据哦~</p>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

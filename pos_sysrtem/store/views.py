@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from user.models import Teacher, Student
 from .models import Shop, Commodity, Order, CommodityToshop, Pay
 from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm
+from .utils import get_30_days_earn_data
 
 
 # Create your views here.
@@ -17,7 +18,6 @@ def myshopList(request):
     context['my_shop_list'] = my_shop_list
     return render(request, 'store/myShopList.html', context)
     # pay_list = Pay.objects.filter()
-
 
 
 def shop_list(request):
@@ -52,8 +52,6 @@ def create_orders(request, shop_pk):
             pay = Pay.objects.get(pay_No=pay_No)
             commodityO = Commodity.objects.get(commodity_name=commodity, shop=shop)
             try:
-
-
 
                 number = create_order_form.cleaned_data['number']
                 number = int(number)
@@ -174,7 +172,7 @@ def create_shop(request):
             except:
                 pass
             try:
-                shopTest2 = Shop.objects.get(shop_name=shop_name)
+                shopTest2 = Shop.objects.get(shop_name=shop_name)  # 避免重名
 
                 create_shop_form = createShopForm()
                 context = {}
@@ -200,7 +198,7 @@ def create_shop(request):
     return render(request, 'store/create_shop.html', context)
 
 
-def update_commodity(request):
+def update_commodity(request, shop_pk):
     try:
         user = request.user
     except:
@@ -209,10 +207,11 @@ def update_commodity(request):
         create_commodity_form = createCommodityForm(request.POST)
         # 创建商品
         if create_commodity_form.is_valid():
-            shop_id = create_commodity_form.cleaned_data['shop_id']
+            # shop_id = create_commodity_form.cleaned_data['shop_id']
+
             commodity_price = create_commodity_form.cleaned_data['commodity_price']
             commodity_name = create_commodity_form.cleaned_data['commodity_name']
-            shop_id = str(user.pk) + '_' + shop_id
+            # shop_id = str(user.pk) + '_' + shop_id
             try:
                 commodity = Commodity.objects.get(commodity_name=commodity_name)
                 create_commodity_form = createCommodityForm()
@@ -224,7 +223,7 @@ def update_commodity(request):
             except:
                 pass
             try:
-                shop = Shop.objects.get(shop_id=shop_id)
+                shop = Shop.objects.get(pk=shop_pk)
                 commodity = Commodity.objects.create(shop=shop, commodity_name=commodity_name,
                                                      commodity_price=commodity_price)
                 commodity.save()
@@ -249,4 +248,32 @@ def update_commodity(request):
     return render(request, 'store/update_commodity.html', context)
 
 
+def shop_info(request, shop_pk):
+    shop_info_list = Shop.objects.get(pk=shop_pk)
+    commodity_list = Commodity.objects.filter(shop=shop_info_list)
+    pay_list = Pay.objects.filter(shop=shop_info_list)
+    context = {}
+    context['shop_info_list'] = shop_info_list
+    context['commodity_list'] = commodity_list
+    context['pay_list'] = pay_list
+    return render(request, 'store/shop_info.html', context)
 
+
+def orders_in_pay(request, pay_pk):
+    pay = Pay.objects.get(pk=pay_pk)
+    order_list = Order.objects.filter(pay=pay)
+    context = {'order_list': order_list}
+    return render(request, 'store/orders_in_pay.html', context)
+
+
+def shop_info_with_charts(request, shop_pk):
+    shop_info_list = Shop.objects.get(pk=shop_pk)
+    dates, earn = get_30_days_earn_data(shop_info_list)
+    pay_list = Pay.objects.filter(shop=shop_info_list)
+    context = {}
+    context['shop_info_list'] = shop_info_list
+    context['dates'] = dates
+    context['earn'] = earn
+    context['max_earn'] = max(earn)
+    context['pay_list'] = pay_list
+    return render(request, 'store/shop_info_with_charts.html', context)
