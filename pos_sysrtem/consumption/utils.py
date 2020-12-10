@@ -1,7 +1,7 @@
 import datetime
 from django.utils import timezone
 from django.db.models import Sum
-from store.models import Pay
+from store.models import Pay, Commodity
 
 
 def get_seven_days_consumption_data(user):
@@ -19,3 +19,6 @@ def get_seven_days_consumption_data(user):
         pay_money.append(result['pay_details_sum'] or 0)
 
     return dates, pay_money
+
+
+

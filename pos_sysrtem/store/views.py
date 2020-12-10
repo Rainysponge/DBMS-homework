@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from user.models import Teacher, Student
 from .models import Shop, Commodity, Order, CommodityToshop, Pay
 from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm
-from .utils import get_30_days_earn_data
+from .utils import get_30_days_earn_data, get_commodity_consumption_data
 
 
 # Create your views here.
@@ -269,9 +269,14 @@ def orders_in_pay(request, pay_pk):
 def shop_info_with_charts(request, shop_pk):
     shop_info_list = Shop.objects.get(pk=shop_pk)
     dates, earn = get_30_days_earn_data(shop_info_list)
+    res = get_commodity_consumption_data(shop_info_list)
     pay_list = Pay.objects.filter(shop=shop_info_list)
+
     context = {}
     context['shop_info_list'] = shop_info_list
+    # context['commodity_list'] = commodity_list
+    # context['pay_money'] = pay_money
+    context['get_commodity_consumption_data'] = res
     context['dates'] = dates
     context['earn'] = earn
     context['max_earn'] = max(earn)
