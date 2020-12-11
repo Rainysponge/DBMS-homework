@@ -7,22 +7,22 @@
      <div class="login">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 mx-auto shadow p-3 bg-white rounded">
+            <div class="col-md-4 mx-auto shadow p-3 bg-white rounded ">
                 {% csrf_token %}
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
                     {% for field in login_form %}
-                        <lable for="{{ field.id_for_label }}">{{ field.label }}</lable>
+                        <lable   for="{{ field.id_for_label }}">{{ field.label }}</lable>
 
-                           <div class="input-group">
+                           <div class="input-group " >
                               <div class="input-group-prepend">
                                   {% if field.label == "用户名" %}
-                                      <span class="input-group-text" ><i class="fa fa-user-circle-o" ></i></span>
+                                      <span class="input-group-text " ><i class="fa fa-user-circle-o" ></i></span>
                                   {% endif %}
                                   {% if field.label == "密码" %}
                                       <span class="input-group-text" ><i class="fa fa-key" ></i></span>
                                   {% endif %}
-                                    <div class="col-md-12">
+                                    <div class="col-md-14">
                                         {{ field }}
                                     </div>
 

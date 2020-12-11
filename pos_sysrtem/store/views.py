@@ -4,6 +4,7 @@ from user.models import Teacher, Student
 from .models import Shop, Commodity, Order, CommodityToshop, Pay
 from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm
 from .utils import get_30_days_earn_data, get_commodity_consumption_data
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -251,11 +252,19 @@ def update_commodity(request, shop_pk):
 def shop_info(request, shop_pk):
     shop_info_list = Shop.objects.get(pk=shop_pk)
     commodity_list = Commodity.objects.filter(shop=shop_info_list)
+    paginator = Paginator(commodity_list, 1)  # 每2页进行分页
+    page_num = request.GET.get('page', 1)
+    page_of_commodity = paginator.get_page(page_num)
+
     pay_list = Pay.objects.filter(shop=shop_info_list)
+    paginator1 = Paginator(pay_list, 1)  # 每2页进行分页
+    page_num1 = request.GET.get('page', 1)
+    page_of_pay = paginator1.get_page(page_num1)
+
     context = {}
     context['shop_info_list'] = shop_info_list
-    context['commodity_list'] = commodity_list
-    context['pay_list'] = pay_list
+    context['commodity_list'] = page_of_commodity
+    context['pay_list'] = page_of_pay
     return render(request, 'store/shop_info.html', context)
 
 

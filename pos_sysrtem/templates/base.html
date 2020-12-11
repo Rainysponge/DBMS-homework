@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
     <script src="http://matthew.wagerfield.com/parallax/assets/scripts/js/libraries.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
     {% block head_extends %}{% endblock %}
 </head>
 <body>
@@ -32,12 +34,7 @@
                 <a class="nav-link" href="{% url 'student_consumption'%}">消费记录</a>
               </li>
           {% endif %}
-          {% if user.Profile.is_shop_owner %}
-              <li class="nav-item {% block consumption_shop_active %}{% endblock %} ">
-                <a class="nav-link" href="#">销售记录</a>
-              </li>
 
-          {% endif %}
 
           <li class="nav-item dropdown">
             {% if user.is_authenticated and user.Profile.is_shop_owner %}
