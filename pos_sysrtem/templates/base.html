@@ -38,7 +38,7 @@
 
           <li class="nav-item dropdown">
             {% if user.is_authenticated and user.Profile.is_shop_owner %}
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle {% block shop_active %}{% endblock %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   店铺管理
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">

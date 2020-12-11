@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
-{% block Link_active %}active{% endblock %}
+{% block shop_active %}active{% endblock %}
 {% block home_active %}{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <p>This is shop_list.html</p>
-                <p>假装分类/导航条</p>
-                <p>该页面用于数据展示，后续应该没什么用</p>
+                <br>
+                <br>
+                <br>
+                <div class="card" style="width: 18rem;">
+
+                  <div class="card-body">
+                    <h5 class="card-title">{{ user.username }}</h5>
+                    <p class="card-text">生日：{{ user.profile.birth|date:"Y-m-d" }}</p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ user.Profile.real_name }}</li>
+                    <li class="list-group-item">{{ user.profile.sex }}</li>
+
+                  </ul>
+
+                </div>
             </div>
             <div class="col-md-9">
                 

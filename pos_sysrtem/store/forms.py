@@ -66,3 +66,15 @@ class createCommodityForm(forms.Form):
     commodity_price = forms.CharField(label='商品价格',
                                       max_length=10, min_length=1,
                                       widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class updateCommodityForm(forms.Form):
+    commodity_name = forms.CharField(label='商品名称',
+                                     max_length=10, min_length=1,
+                                     widget=forms.TextInput(attrs={'class': 'form-control',
+                                                                   'placeholder': '请输入已有的商品名称'}))
+
+    commodity_price = forms.CharField(label='商品价格',
+                                      max_length=10, min_length=1,
+                                      widget=forms.TextInput(attrs={'class': 'form-control',
+                                                                    'placeholder': '请输入想要更改的价格'}))
