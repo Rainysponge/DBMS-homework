@@ -24,6 +24,7 @@ def get_commodity_consumption_data(shop):
     commodity_list = []
     pay_money = []
     res = []
+    count = 0
     # pay_today = Pay.objects.filter(buyer_id=user, pay_time__year=today.year,
     #                                pay_time__month=today.month, pay_time__day=today.day)
     try:
@@ -43,7 +44,9 @@ def get_commodity_consumption_data(shop):
         result = number_sum['number_sum'] * item.commodity_price if number_sum['number_sum'] else 0
         pay_money.append(result)
         res.append({'value': result, 'name': item.commodity_name})
-        # res = []
-        # for i in range(len(pay_money)):
-        #     res.append({'value':pay_money[i]})
-    return res
+
+    if len(res) <= 3:
+        return res
+    else:
+        res = sorted(res, key=lambda x: x['value'], reverse=True)
+        return res[:3]

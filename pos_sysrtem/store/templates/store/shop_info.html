@@ -126,7 +126,7 @@
                         {# 上一页 #}
                         <li class="page-item">
                             {% if pay_list.has_previous %}
-                                <a class="page-link" href="?page={{ pay_list.pageprevious_page_number }}" aria-label="Previous">
+                                <a class="page-link" href="?page1={{ pay_list.pageprevious_page_number }}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             {% else %}
@@ -137,7 +137,7 @@
                         </li>
                         {# 全部页码 #}
                         {% for page_num in pay_list.paginator.page_range %}
-                         <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                         <li class="page-item"><a class="page-link" href="?page1={{ page_num }}">{{ page_num }}</a></li>
                         {% endfor %}
                         {# 下一页 #}
                         <li class="page-item">

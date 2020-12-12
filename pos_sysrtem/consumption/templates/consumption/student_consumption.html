@@ -9,20 +9,50 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <p> <span>{{ user.username }} 你好！</span></p>
-                {% if user.Profile.is_student %}
-                    <span style="color: green; ">同学好</span>
-                {% endif %}
+{#                <p> <span>{{ user.username }} 你好！</span></p>#}
+{#                {% if user.Profile.is_student %}#}
+{#                    <span style="color: green; ">同学好</span>#}
+{#                {% endif %}#}
+{##}
+{#                <span>{{ dates }}</span>#}
+{#                <span>{{ seven_days_consumption }}</span>#}
+{#                {% for pay in pay_list %}#}
+{##}
+{#                    <p><span>{{ pay.buyer_id.username }} </span></p>#}
+{#                    <p><span>{{ pay.pay_money }}</span></p>#}
+{#                    <p><span>{{ pay.pay_time }}</span></p>#}
+{#                {% empty %}#}
+{#                {% endfor %}#}
+            <h2 style="text-align: center">消费记录</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                      <tr>
 
-                <span>{{ dates }}</span>
-                <span>{{ seven_days_consumption }}</span>
-                {% for pay in pay_list %}
+                        <th scope="col">编号</th>
+                        <th scope="col">产生时间</th>
+                        <th scope="col">商店</th>
+                        <th scope="col">金额</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for pay_item in pay_list %}
 
-                    <p><span>{{ pay.buyer_id.username }} </span></p>
-                    <p><span>{{ pay.pay_money }}</span></p>
-                    <p><span>{{ pay.pay_time }}</span></p>
-                {% empty %}
-                {% endfor %}
+                                <tr>
+                                    <th scope="row">
+                                        <a href="{% url 'orders_in_pay' pay_item.pk %}">{{ pay_item.pay_No }}</a>
+                                    </th>
+                                    <td>{{ pay_item.pay_time }}</td>
+                                    <td>{{ pay_item.shop.shop_name }}</td>
+                                    <td>{{ pay_item.pay_money }}</td>
+
+                                </tr>
+
+                        {% empty %}
+                            <p>没有数据哦~</p>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
             </div>
             <div class="col-md 6">
 

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block Link_active %}active{% endblock %}
+{% block shopList %}active{% endblock %}
 {% block home_active %}{% endblock %}
 {% block content %}
     <div class="container">
@@ -26,7 +26,7 @@
                         {% for shop in shop_list %}
                             {% if shop.is_active %}
                                 <tr>
-                                    <th scope="row">{{ shop.pk }}</th>
+                                    <th scope="row"></th>
                                     <td>{{ shop.shop_name }}</td>
                                     <td>{{ shop.shop_owner }}</td>
                                     <td>{{ shop.shop_position }}</td>

@@ -71,7 +71,9 @@ def create_orders(request, shop_pk):
                 return render(request, 'store/create_orders.html', context)
 
             context = {'massage': 'Success'}
-            return render(request, 'index.html', context)
+            create_order_form = createOrderForm()
+            context['create_order_form'] = create_order_form
+            return render(request, 'store/create_orders.html', context)
     else:
         create_order_form = createOrderForm()
 
@@ -132,8 +134,10 @@ def creat_pay(request, shop_pk):
                 return render(request, 'store/create_pay.html', context)
 
             context = {'massage': 'Success'}
+            create_pay_form = createPayForm()
+            context['create_pay_form'] = create_pay_form
             # return redirect(request.GET.get('from', reverse('home')))
-            return render(request, 'index.html', context)
+            return render(request, 'store/create_pay.html', context)
     else:
         create_pay_form = createPayForm()
     context = {}
@@ -200,7 +204,7 @@ def create_shop(request):
     return render(request, 'store/create_shop.html', context)
 
 
-def update_commodity(request, shop_pk):
+def create_commodity(request, shop_pk):
     try:
         user = request.user
         shop = Shop.objects.get(pk=shop_pk)
@@ -244,7 +248,9 @@ def update_commodity(request, shop_pk):
                 return render(request, 'store/update_commodity.html', context)
 
             context = {'massage': '创建商品成功！'}
-            return render(request, 'index.html', context)
+            create_commodity_form = createCommodityForm()
+            context['create_commodity_form'] = create_commodity_form
+            return render(request, 'store/update_commodity.html', context)
 
 
     else:
@@ -270,7 +276,7 @@ def shop_info(request, shop_pk):
 
     pay_list = Pay.objects.filter(shop=shop_info_list)
     paginator1 = Paginator(pay_list, 1)  # 每2页进行分页
-    page_num1 = request.GET.get('page', 1)
+    page_num1 = request.GET.get('page1', 1)
     page_of_pay = paginator1.get_page(page_num1)
 
     context = {}
@@ -303,3 +309,65 @@ def shop_info_with_charts(request, shop_pk):
     context['max_earn'] = max(earn)
     context['pay_list'] = pay_list
     return render(request, 'store/shop_info_with_charts.html', context)
+
+
+def update_commodity_price(request, shop_pk):
+    try:
+        user = request.user
+        shop = Shop.objects.get(pk=shop_pk)
+    except:
+        return render(request, 'user/login.html', {'massage': '用户未登录！'})
+    if request.method == 'POST':
+        update_commodity_form = updateCommodityForm(request.POST)
+        # 创建商品
+        # update_commodity_form = updateCommodityForm(request.POST)
+        if update_commodity_form.is_valid():
+            # shop_id = create_commodity_form.cleaned_data['shop_id']
+
+            commodity_price = update_commodity_form.cleaned_data['commodity_price']
+            commodity_name = update_commodity_form.cleaned_data['commodity_name']
+
+            try:
+                commodity = Commodity.objects.get(shop=shop, commodity_name=commodity_name)
+                # update_commodity_form = updateCommodityForm()
+
+            except:
+                update_commodity_form = updateCommodityForm()
+                context = {}
+                context['update_commodity_form'] = update_commodity_form
+                context['form_title'] = '##'
+                context['massage'] = '该商品还未被创建！'
+                # context['update_commodity_form'] = update_commodity_form
+                return render(request, 'store/update_commodity_price.html', context)
+            try:
+
+                commodity.commodity_price = commodity_price
+                commodity.save()
+            except Exception as e:
+                update_commodity_form = updateCommodityForm()
+                context = {}
+                context['update_commodity_form'] = update_commodity_form
+                context['form_title'] = '##'
+                context['massage'] = '输入信息有误！'
+                # context['update_commodity_form'] = update_commodity_form
+                return render(request, 'store/update_commodity_price.html', context)
+
+            context = {'massage': '创建商品成功！'}
+            update_commodity_form = updateCommodityForm()
+            context['update_commodity_form'] = update_commodity_form
+            return render(request, 'store/update_commodity_price.html', context)
+
+
+    else:
+        create_commodity_form = createCommodityForm()
+        # update_commodity_form = updateCommodityForm()
+
+
+    context = {}
+    # context['page_title'] = '欢迎'
+    update_commodity_form = updateCommodityForm()
+    context['update_commodity_form'] = update_commodity_form
+    # context['update_commodity_form'] = update_commodity_form
+    # context['commodity_list'] = commodity_list
+    context['form_title'] = '##'
+    return render(request, 'store/update_commodity_price.html', context)

@@ -16,7 +16,9 @@
                         <p class="text-danger">{{ field.errors.as_text }}</p>
                     {% endfor %}
                     <span class="pull-left text-danger">{{ create_pay_form.non_field_errors }}</span>
-                    <button id="submit" v-bind:title="message" type="submit" class="btn btn-info btn-lg btn-block">注册</button>
+                    <button id="submit" v-bind:title="message" type="submit" class="btn btn-info btn-lg btn-block">
+                        提交账单信息
+                    </button>
                 </form>
             </div>
         </div>
