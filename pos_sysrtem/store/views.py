@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from user.models import Teacher, Student
 from .models import Shop, Commodity, Order, CommodityToshop, Pay
-from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm, updateCommodityForm
+from .forms import createOrderForm, createPayForm, createShopForm, createCommodityForm, updateCommodityForm, \
+    updateShopInfoForm
 from .utils import get_30_days_earn_data, get_commodity_consumption_data
 from django.core.paginator import Paginator
 
@@ -371,3 +372,44 @@ def update_commodity_price(request, shop_pk):
     # context['commodity_list'] = commodity_list
     context['form_title'] = '##'
     return render(request, 'store/update_commodity_price.html', context)
+
+
+def update_shop_info(request, shop_pk):
+    # update_shop_Info_form = updateShopInfoForm()
+    try:
+        shop = Shop.objects.get(pk=shop_pk)
+        user = request.user
+    except:
+        return render(request, 'index.html', {'massage': '出了一点意外=）'})
+    if request.method == 'POST':
+        change_shop_info_form = updateShopInfoForm(request.POST)
+        if change_shop_info_form.is_valid():
+            # shop_position
+            # contends
+            shop_position = change_shop_info_form.cleaned_data['shop_position']
+            contends = change_shop_info_form.cleaned_data['contends']
+            shop.contends = contends
+            shop.shop_position = shop_position
+            shop.save()
+            my_shop_list = Shop.objects.filter(shop_owner=user)
+
+            context = {}
+
+            context['my_shop_list'] = my_shop_list
+            return render(request, 'store/myShopList.html', context)
+
+
+
+
+
+    else:
+        change_shop_info_form = updateShopInfoForm()
+
+    context = {}
+
+    context['change_shop_info_form'] = change_shop_info_form
+
+    # context['massege'] = '信息修改成功！'
+    return render(request, 'store/update_shop_info.html', context)
+
+

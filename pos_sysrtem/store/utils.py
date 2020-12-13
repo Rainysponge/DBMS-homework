@@ -1,4 +1,5 @@
 import datetime
+import pymysql
 from django.utils import timezone
 from django.db.models import Sum
 from .models import Pay, Commodity, Order
@@ -50,3 +51,62 @@ def get_commodity_consumption_data(shop):
     else:
         res = sorted(res, key=lambda x: x['value'], reverse=True)
         return res[:3]
+
+
+def func(nums):
+    try:
+        PY_MYSQL_CONN_DICT = {
+            "host": '192.168.0.214',
+            "port": 3306,
+            "user": 'root',
+            "passwd": '******',
+            "db": 'POS'
+        }  # 密码需要更改后使用
+
+        conn = pymysql.connect(**PY_MYSQL_CONN_DICT)  # 游标
+        cusor = conn.cursor(cursor=pymysql.cursors.DictCursor)
+
+        # 调用 p1 存储过程，传入4个参数
+        nums = tuple(nums)  # 需要元组形式
+        cusor.callproc('p1', args=nums)
+
+        # 返回获得的集合，即存储函数中的 SELECT * FROM tmp; 结果
+        res1 = cusor.fetchall()
+        print(res1)
+
+        # 以 python 固定格式获取返回的值：@_存储过程名_0, 第一个返回值
+        cusor.execute("select @_p1_0, @_p1_1, @_p1_2, @_p1_3")
+        res2 = cusor.fetchall()
+        print(res2)
+
+        conn.commit()
+        cusor.close()
+        conn.close()
+    except:
+        pass
+
+
+def createTrigglr():
+    try:
+        db = pymysql.connect("localhost", "root", "******", "POS")
+
+        # 使用cursor()方法创建一个游标对象
+        cursor = db.cursor()
+        sql = '''create trigger ygdelete after delete on store_pay
+                begin
+                delete from store_order where store_order.id=:old.id; 
+                end;'''
+        # 使用executte()方法执行SQL语句
+        cursor.execute(sql)
+
+        # 使用fetall()获取全部数据
+        data = cursor.fetchall()
+
+        # 打印获取到的数据
+        # print(data)
+
+        # 关闭游标和数据库的连接
+        cursor.close()
+        db.close()
+    except:
+        pass

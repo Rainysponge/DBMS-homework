@@ -82,7 +82,7 @@ def changeStudentInfo(request, user_pk):
     if request.method == 'POST':
         change_student_info_form = changeStudentInfoForm(request.POST)
         if change_student_info_form.is_valid():
-            pass
+
             grade = change_student_info_form.cleaned_data['grade']
 
             dept = change_student_info_form.cleaned_data['dept']
@@ -109,7 +109,7 @@ def changeStudentInfo(request, user_pk):
     context['change_student_info_form'] = change_student_info_form
     context['form_title'] = '修改学生信息'
     context['user_name'] = user.username
-    context['massege'] = '信息修改成功！'
+    # context['massege'] = '信息修改成功！'
     return render(request, 'user/change_student_info.html', context)
 
 
@@ -118,7 +118,6 @@ def changeTeacherInfo(request, user_pk):
     if request.method == 'POST':
         change_teacher_info_form = changeTeacherInfoForm(request.POST)
         if change_teacher_info_form.is_valid():
-            pass
 
             dept = change_teacher_info_form.cleaned_data['dept']
 
@@ -144,7 +143,7 @@ def changeTeacherInfo(request, user_pk):
     context['change_teacher_info_form'] = change_teacher_info_form
     context['form_title'] = '修改老师信息'
     context['user_name'] = user.username
-    context['massege'] = '信息修改成功！'
+    # context['massege'] = '信息修改成功！'
     return render(request, 'user/change_teacher_info.html', context)
 
 
@@ -153,7 +152,6 @@ def changeShopownerInfo(request, user_pk):
     if request.method == 'POST':
         change_shopowner_info_form = changeShopownerInfoForm(request.POST)
         if change_shopowner_info_form.is_valid():
-            pass
 
             IDnumber = change_shopowner_info_form.cleaned_data['IDnumber']
 
@@ -179,5 +177,5 @@ def changeShopownerInfo(request, user_pk):
     context['change_shopowner_info_form'] = change_shopowner_info_form
     context['form_title'] = '修改商家信息'
     context['user_name'] = user.username
-    context['massege'] = '信息修改成功！'
+    # context['massege'] = '信息修改成功！'
     return render(request, 'user/change_shopowner_info.html', context)

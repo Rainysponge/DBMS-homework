@@ -5,7 +5,6 @@ from .models import Order, Pay, CommodityToshop, Commodity
 
 
 class createOrderForm(forms.Form):
-
     pay_No = forms.CharField(label='账单编号',
                              max_length=16, min_length=1,
                              widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -20,7 +19,6 @@ class createOrderForm(forms.Form):
 
 
 class createPayForm(forms.Form):
-
     pay_No = forms.CharField(label='账单编号',
                              max_length=16, min_length=1,
                              widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -78,3 +76,16 @@ class updateCommodityForm(forms.Form):
                                       max_length=10, min_length=1,
                                       widget=forms.TextInput(attrs={'class': 'form-control',
                                                                     'placeholder': '请输入想要更改的价格'}))
+
+
+class updateShopInfoForm(forms.Form):
+    # shop_position = models.CharField(max_length=32, null=True)
+    # contends = models.TextField(null=True)
+    shop_position = forms.CharField(label='商店位置',
+                                    max_length=12, min_length=1,
+                                    widget=forms.TextInput(attrs={'class': 'form-control',
+                                                                  'placeholder': '请输入真实的地址信息'}))
+    contends = forms.CharField(label='简介',
+                               max_length=30, min_length=1,
+                               widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'placeholder': '请输入真实的地址信息'}))
