@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{{ form_title }}{% endblock %}
-
+{% block bodyBack %}
+{#<body style="background-image:url('/media/back1.jpeg');background-repeat:no-repeat ;background-size:100% 100%; background-attachment: fixed;">#}
+<body background="/media/back1.jpeg" style="background-repeat:no-repeat ;background-size:100%,100%; background-attachment: fixed;">
+{% endblock %}
 {% block content %}
     <br><br>
     <div class="container">

@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
     {% block head_extends %}{% endblock %}
 </head>
+{% block bodyBack %}
 <body>
+{% endblock %}
     <div id="container" class="wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="{% url 'home' %}">POS信息管理</a>

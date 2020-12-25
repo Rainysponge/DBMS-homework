@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block shop_active %}active{% endblock %}
 {% block home_active %}{% endblock %}
+{% block bodyBack %}
+{#<body style="background-image:url('/media/back1.jpeg');background-repeat:no-repeat ;background-size:100% 100%; background-attachment: fixed;">#}
+<body background="/media/back2.jpeg" style="background-repeat:no-repeat ;background-size:100%,100%; background-attachment: fixed;">
+{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
@@ -40,7 +44,7 @@
                         {% for shop in my_shop_list %}
                             {% if shop.is_active %}
                                 <tr>
-                                    <th scope="row">{{ shop.pk }}</th>
+                                    <th scope="row">{{ shop.shop_id }}</th>
                                     <td>
                                         <a href="{% url 'shop_info' shop.pk %}">
                                             {{ shop.shop_name }}

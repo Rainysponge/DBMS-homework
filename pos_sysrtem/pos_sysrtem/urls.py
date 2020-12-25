@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from django.conf.urls.static import static
+from . import views, settings
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -24,3 +25,4 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('consumption/', include('consumption.urls')),
 ]
+urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)
