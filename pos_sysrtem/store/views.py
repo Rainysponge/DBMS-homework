@@ -271,12 +271,12 @@ def create_commodity(request, shop_pk):
 def shop_info(request, shop_pk):
     shop_info_list = Shop.objects.get(pk=shop_pk)
     commodity_list = Commodity.objects.filter(shop=shop_info_list)
-    paginator = Paginator(commodity_list, 1)  # 每2页进行分页
+    paginator = Paginator(commodity_list, 4)  # 每2页进行分页
     page_num = request.GET.get('page', 1)
     page_of_commodity = paginator.get_page(page_num)
 
     pay_list = Pay.objects.filter(shop=shop_info_list)
-    paginator1 = Paginator(pay_list, 1)  # 每2页进行分页
+    paginator1 = Paginator(pay_list, 4)  # 每2页进行分页
     page_num1 = request.GET.get('page1', 1)
     page_of_pay = paginator1.get_page(page_num1)
 
